@@ -1,0 +1,24 @@
+name: hell-world
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Hello world action step
+      run: echo "Hello, world!"
+
+    - name: Display date time for another step
+      run: |
+        echo "Current date and time is:"
+        date
+    - name: List files in the repository
+      run: |
+        echo "Listing files in the repository:"
+        ls -la

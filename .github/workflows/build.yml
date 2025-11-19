@@ -1,8 +1,36 @@
-name: Call Reusable Workflow
-on: [push]
+name: Artifacts & Caching Demo
+on:
+  workflow_dispatch:  # manual trigger
 
 jobs:
-  call:
-    uses: ./.github/workflows/reusable.yml
-    with:
-      env: production
+  demo-cache-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Step 1: Restore cache
+      - name: Restore Cache
+        uses: actions/cache@v4
+        with:
+          path: my-folder/
+          key: demo-cache
+
+      # Step 2: Create a file (simulating a build)
+      - name: Create File
+        run: |
+          mkdir -p my-folder
+          echo "Hello World" > my-folder/hello.txt
+
+      # Step 3: Save cache
+      - name: Save Cache
+        uses: actions/cache@v4
+        with:
+          path: my-folder/
+          key: demo-cache
+
+      # Step 4: Upload as artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello-artifact
+          path: my-folder/hello.txt

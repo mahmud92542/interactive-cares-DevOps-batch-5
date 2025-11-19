@@ -6,27 +6,35 @@ jobs:
   # Job 1: Show Repo Variable
   show-variable:
     runs-on: ubuntu-latest
+    environment: DEV
     steps:
       - uses: actions/checkout@v4
       - name: Show Repo Variable
-        run: echo "Repository variable ENVIRONMENT is ${{ vars.ENVIRONMENT }}"
+        run: |
+          echo "Repository variable ENVIRONMENT is ${{ vars.DEV_VARIABLE }}"
+          echo "Repository secret ASSISTANT_ID is ${{ secrets.DEV_KEY }}"
 
   # Job 2: Show Secret
   show-secret:
     runs-on: ubuntu-latest
+    environment: PROD
     steps:
       - uses: actions/checkout@v4
       - name: Show Secret (masked)
-        run: echo "Repository secret ASSISTANT_ID is ${{ secrets.ASSISTANT_ID }}"
-
-  # Job 3: Dependent job (runs after first two finish)
-  combined-info:
-    runs-on: ubuntu-latest
-    needs: [show-variable, show-secret]   # depends on the first two jobs
-    steps:
-      - uses: actions/checkout@v4
-      - name: Combined Info
         run: |
-          echo "This job runs after the first two jobs."
-          echo "ENVIRONMENT variable: ${{ vars.ENVIRONMENT }}"
-          echo "Secret is masked: ${{ secrets.ASSISTANT_ID }}"
+          echo "Repository variable ENVIRONMENT is ${{ vars.PROD_VARIABLE }}"
+          echo "Repository secret ASSISTANT_ID is ${{ secrets.PROD_KEY }}"
+
+  # # Job 3: Dependent job (runs after first two finish)
+  # combined-info:
+  #   runs-on: ubuntu-latest
+  #   needs: [show-variable, show-secret]   # depends on the first two jobs
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Combined Info
+  #       run: |
+  #         echo "This job runs after the first two jobs."
+  #         echo "Repository variable ENVIRONMENT is ${{ vars.DEV_VARIABLE }}"
+  #         echo "Repository secret ASSISTANT_ID is ${{ secrets.DEV_KEY }}"
+  #         echo "Repository variable ENVIRONMENT is ${{ vars.PROD_VARIABLE }}"
+  #         echo "Repository secret ASSISTANT_ID is ${{ secrets.PROD_KEY }}"

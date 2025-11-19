@@ -1,6 +1,7 @@
-name: Example Uses
+name: Runner Info
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   demo:
@@ -8,15 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - name: Show files
+        run: ls -la
 
-      - name: Install Dependencies
-        run: npm install
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: node-modules
-          path: node_modules/
+      - name: Show runner OS
+        run: uname -a

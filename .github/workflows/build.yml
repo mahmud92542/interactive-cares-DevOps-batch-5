@@ -15,8 +15,6 @@ jobs:
       # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: 18
 
       # Step 3: List files in repo
       - name: List repository files

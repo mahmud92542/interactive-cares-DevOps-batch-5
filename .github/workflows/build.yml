@@ -1,6 +1,6 @@
 name: Artiface Demo
 on: 
-  oush:
+  push:
     branches:
       - main
 

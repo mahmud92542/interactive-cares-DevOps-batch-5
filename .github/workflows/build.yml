@@ -1,36 +1,19 @@
-name: Artifacts & Caching Demo
+name: Conditional Demo
 on:
-  workflow_dispatch:  # manual trigger
+  workflow_dispatch:
 
 jobs:
-  demo-cache-artifact:
+  demo-conditional:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - run: echo "Step 1 always runs"
 
-      # Step 1: Restore cache
-      - name: Restore Cache
-        uses: actions/cache@v4
-        with:
-          path: my-folder/
-          key: demo-cache
+      # Step 2 runs only if ENVIRONMENT variable is DEV
+      - name: Run Only in DEV
+        if: ${{ vars.ENVIRONMENT == 'DEV' }}
+        run: echo "This step runs only in DEV environment"
 
-      # Step 2: Create a file (simulating a build)
-      - name: Create File
-        run: |
-          mkdir -p my-folder
-          echo "Hello Mahmud!" > my-folder/hello.txt
-
-      # Step 3: Save cache
-      - name: Save Cache
-        uses: actions/cache@v4
-        with:
-          path: my-folder/
-          key: demo-cache
-
-      # Step 4: Upload as artifact
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: hello-artifact
-          path: my-folder/hello.txt
+      # Step 3 runs if ENVIRONMENT is not DEV
+      - name: Run Only if NOT DEV
+        if: ${{ vars.ENVIRONMENT != 'DEV' }}
+        run: echo "This step runs only in other environments"

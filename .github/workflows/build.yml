@@ -13,7 +13,6 @@ jobs:
       - run: echo "This is the build step."
   lint:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - run: echo "This is the lint step, dependent on build."
   test:

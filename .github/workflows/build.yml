@@ -1,25 +1,33 @@
-name: hello-world
+name: Runner Details Demo
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
-  build:
-    name: Hello World Job
+  show-info:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Hello world action step
-      run: echo "Hello, world!"
+      - name: Show OS info
+        run: uname -a
 
-    - name: Display date time for another step
-      run: |
-        echo "Current date and time is:"
-        date
-    - name: List files in the repository
-      run: |
-        echo "Listing files in the repository:"
-        ls -la
+      - name: Show CPU info
+        run: lscpu
+
+      - name: Show Memory info
+        run: free -h
+
+      - name: Show Disk info
+        run: df -h
+
+      - name: List files in workspace
+        run: ls -la
+
+      - name: Show environment variables
+        run: printenv
+
+      - name: Show GitHub runner details
+        run: |
+          echo "Runner name: ${{ runner.name }}"
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner architecture: ${{ runner.arch }}"

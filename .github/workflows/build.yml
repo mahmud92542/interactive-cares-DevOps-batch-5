@@ -1,33 +1,22 @@
-name: Runner Details Demo
+name: Example Uses
 
-on:
-  workflow_dispatch:
+on: [push]
 
 jobs:
-  show-info:
+  demo:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Show OS info
-        run: uname -a
+      - uses: actions/checkout@v4
 
-      - name: Show CPU info
-        run: lscpu
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Show Memory info
-        run: free -h
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Show Disk info
-        run: df -h
-
-      - name: List files in workspace
-        run: ls -la
-
-      - name: Show environment variables
-        run: printenv
-
-      - name: Show GitHub runner details
-        run: |
-          echo "Runner name: ${{ runner.name }}"
-          echo "Runner OS: ${{ runner.os }}"
-          echo "Runner architecture: ${{ runner.arch }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules/

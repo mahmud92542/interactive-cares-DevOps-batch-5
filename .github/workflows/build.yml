@@ -1,13 +1,18 @@
-name: Matrix Build Demo
-on: [push]
+name: Secrets & Variables Demo
+on:
+  workflow_dispatch:   # run manually
 
 jobs:
-  test:
+  demo:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        name: ["Mahmud","Hasan"]
     steps:
+      # Step 1: Checkout repo (optional, good practice)
       - uses: actions/checkout@v4
-      - run: |
-          echo Hello! ${{ matrix.name }}
+
+      # Step 2: Show repository variable (visible)
+      - name: Show Repo Variable
+        run: echo "Repository variable ENVIRONMENT is ${{ vars.ENVIRONMENT }}"
+
+      # Step 3: Show secret (will be masked)
+      - name: Show Secret (masked)
+        run: echo "Repository secret ASSISTANT_ID is ${{ secrets.ASSISTANT_ID }}"

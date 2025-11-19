@@ -1,29 +1,17 @@
-name: Checkout & Node Demo
-
-on:
-  workflow_dispatch:   # Run manually
+name: Matrix Build Demo
+on: [push]
 
 jobs:
-  demo:
+  test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node: [16, 18, 20]
     steps:
-      # Step 1: Checkout code
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      # Step 2: Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-
-      # Step 3: List files in repo
-      - name: List repository files
-        run: ls -la
-
-      # Step 4: Show Node.js version
-      - name: Show Node version
-        run: node -v
-
-      # Step 5: Show npm version
-      - name: Show npm version
-        run: npm -v
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node -v
+      - run: npm install
+      - run: npm test

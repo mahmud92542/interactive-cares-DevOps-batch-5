@@ -1,19 +1,29 @@
-name: Conditional Demo
+name: Matrix Build Demo
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+    - '.github/workflows/build.yml'
 jobs:
-  demo-conditional:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12, 14, 16]
     steps:
-      - run: echo "Step 1 always runs"
-
-      # Step 2 runs only if ENVIRONMENT variable is DEV
-      - name: Run Only in DEV
-        if: ${{ vars.ENVIRONMENT == 'DEV' }}
-        run: echo "This step runs only in DEV environment"
-
-      # Step 3 runs if ENVIRONMENT is not DEV
-      - name: Run Only if NOT DEV
-        if: ${{ vars.ENVIRONMENT != 'DEV' }}
-        run: echo "This step runs only in other environments"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Show Node.js version
+        run: node -v
+      - name: Show npm version
+        run: npm -v
